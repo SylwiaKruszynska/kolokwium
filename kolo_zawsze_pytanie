@@ -1,0 +1,59 @@
+#!/bin/bash
+case $1 in
+    -d)
+      read -p "podaj nazwę pliku" plik
+      sort -n -k1,1 $plik | head -n5
+      ;;
+    -v)
+      read -p "podaj nazwę pliku" plik
+      grep -v 'linux' $plik
+      ;;
+    -x)
+      read -p "podaj nazwę pliku " plik
+      tac $plik
+      ;;
+    -y)
+      read -p "podaj nazwę pliku " plik
+      ls -lt $plik | head -n 10
+      ;;
+    -z)
+      read -p "podaj nazwę pliku " plik
+      tr '[:lower:]' '[:upper:]' < $plik
+      ;;
+esac
+PS3="Wybierz opcję z menu: "
+options=("Wyświetl linie z 5 słowami" "Wyświetl zawartość w odwrotnej kolejności liter" "Wyświetl pliki z co najmniej 3 samogłoskami" "Zlicz słowa w pliku" "Suma rozmiarów plików w katalogu" "Wyjście")
+select opt in "${options[@]}"; do
+  case $REPLY in
+    "1")
+        read -p "Podaj nazwę pliku: " plik
+        grep -E '([^[:space:]]+[[:space:]]+){4}[^[:space:]]+' "$plik"
+        ;;
+    "2")
+        read -p "Podaj nazwę pliku: " plik
+        lines=()
+        while IFS= read -r line; do
+            lines+=("$line")
+        done < "$plik"
+        for ((i = ${#lines[@]} - 1; i >= 0; i--)); do
+            echo "${lines[i]}" | rev
+        done
+        ;;
+    "3")
+        find . -maxdepth 1 -type f -iname '*[aeiouAEIOU]*[aeiouAEIOU]*[aeiouAEIOU]*'
+        ;;
+    "4")
+        read -p "Podaj nazwę pliku: " plik
+        echo "Liczba słów w pliku:"
+        wc -w < "$plik"
+        ;;
+    "5")
+        echo "Suma rozmiarów wszystkich plików w katalogu:"
+        du -ch | tail -n 1
+        ;;
+    6)
+        echo "Wyjście..."
+        break
+        ;;
+  esac
+done
