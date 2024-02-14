@@ -1,6 +1,9 @@
 case $1 in
         -d)
-        sort -n -k1,1 "$2" | head -n 5 ;;
+        while IFS= read -r line; do
+        echo "${#line} $line"
+        done < "$2" | sort -n | head -n 5 | cut -d " " -f 2-
+        ;;
         -v)
          grep -v 'linux' "$2" ;;
         -x)
@@ -22,8 +25,10 @@ case $opcja in
             grep -E '([^[:space:]]+[[:space:]]+){4}[^[:space:]]+' $nazwa
           ;;
         "2")
-            read -p "podaj nazwę pliku: " nazwa
-            tac $nazwa
+             read -p "Podaj nazwę pliku: " nazwa
+             while IFS= read -r line; do
+                 echo "$line" | rev
+             done < "$nazwa"
           ;;
          "3")
             find . -maxdepth 1 -type f -iname '*[aeiouAEIOU]*[aeiouAEIOU]*[aeiouAEIOU]*'
@@ -39,3 +44,7 @@ case $opcja in
           ;;
 
 esac
+
+
+
+
