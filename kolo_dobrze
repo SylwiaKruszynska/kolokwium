@@ -6,7 +6,7 @@ case $1 in
         -x)
         tac "$2" ;;
         -y)
-        ls -lt "$2" | head -n 10 ;;
+        ls -lt | head -n 10 ;;
         -z)
          cat "$2" | tr 'a-z' 'A-Z' ;;
 esac
