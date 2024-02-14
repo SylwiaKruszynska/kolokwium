@@ -13,8 +13,7 @@ case $1 in
       tac $plik
       ;;
     -y)
-      read -p "podaj nazwę pliku " plik
-      ls -lt $plik | head -n 10
+      ls -lt | head -n 10
       ;;
     -z)
       read -p "podaj nazwę pliku " plik
